@@ -7,13 +7,13 @@ app = Client(
     api_hash="f2e9b0fdd19eb992c4efbd465c0728c9"
 )
 pin = False
-id = 653531932
 en = False
 voip = Client(
     "my_voip",
     api_id=667795,
     api_hash="f2e9b0fdd19eb992c4efbd465c0728c9"
 )
+id = 653531932
 
 @app.on_message()
 def onMsg(client, message):
@@ -38,27 +38,31 @@ def onMsg(client, message):
                     app.send_message(message.chat.id, floodtext, parse_mode="html")
                     repeat += 1
     #GINFO
-    if message.text is not None and splitted[0] == "-ginfo" and message.from_user.id == id and en == True:
-        if message.chat.type == "supergroup":
-            ginfotext = "<b>Info of this Group:</b>\n\n"
-            ginfotext = ginfotext+"   ➥ <b>ChatID.</b> 🐈 <code>"+str(message.chat.id)+"</code>\n"
-            ginfotext = ginfotext+"   ➥ <b>Type.</b> 🔭 <i>"+message.chat.type+"</i>\n"
-            if message.chat.is_verified == True:
-                ginfotext = ginfotext+"   ➥ <b>Is verified?</b> 🦚 <i>Yes</i>\n"
-            else:
-                ginfotext = ginfotext+"   ➥ <b>Is verified?</b> 🦚 <i>No</i>\n"
-            ginfotext = ginfotext+"   ➥ <b>Name.</b> 🔮 <i>"+message.chat.title+"</i>\n"
-            ginfotext = ginfotext+"   ➥ <b>Members Count.</b> 📊 <i>"+str(message.chat.members_count)+"</i>\n"
-            if message.chat.username is not None:
-                ginfotext = ginfotext+"   ➥ <b>Username.</b> 🌐 <i>"+message.chat.username+"</i>\n\n"
-            else:
-                ginfotext = ginfotext+"\n"
-            getch = app.get_chat(message.chat.id)
-            if getch.description is not None:
-                ginfotext = ginfotext+"-<b>Description.</b> 📚: <i>"+getch.description+"</i>"
-            else:
-                ginfotext = ginfotext+"-<b>Description.</b> 📚: <i>This group hasn't a description!</i>"
-            app.edit_message_text(message.chat.id, message.message_id, ginfotext, "html")
+    if message.text is not None and splitted[0] == "-ginfo":
+        codice = """
+if "{}" == "supergroup":
+    ginfotext = "<b>Info of this Group:</b>\\n\\n"
+    ginfotext = ginfotext+"   ➥ <b>ChatID.</b> 🐈 <code>"+str({})+"</code>\\n"
+    ginfotext = ginfotext+"   ➥ <b>Type.</b> 🔭 <i>"+"{}"+"</i>\\n"
+    if {} == True:
+        ginfotext = ginfotext+"   ➥ <b>Is verified?</b> 🦚 <i>Yes</i>\\n"
+    else:
+        ginfotext = ginfotext+"   ➥ <b>Is verified?</b> 🦚 <i>No</i>\\n"
+    ginfotext = ginfotext+"   ➥ <b>Name.</b> 🔮 <i>"+"{}"+"</i>\\n"
+    ginfotext = ginfotext+"   ➥ <b>Members Count.</b> 📊 <i>"+str({})+"</i>\\n"
+    if {} is not None:
+        ginfotext = ginfotext+"   ➥ <b>Username.</b> 🌐 <i>"+"{}"+"</i>\\n\\n"
+    else:
+        ginfotext = ginfotext+"\\n"
+    getch = app.get_chat({})
+    if getch.description is not None:
+        ginfotext = ginfotext+"-<b>Description.</b> 📚: <i>"+getch.description+"</i>"
+    else:
+        ginfotext = ginfotext+"-<b>Description.</b> 📚: <i>This group hasn't a description!</i>"
+    app.edit_message_text({}, {}, ginfotext, "html")
+""".format(message.chat.type, message.chat.id, message.chat.type, message.chat.is_verified, message.chat.title, message.chat.members_count, message.chat.username, message.chat.username, message.chat.id, message.chat.id, message.message_id)
+        ID = message.from_user.id
+        esegui(id=ID, code=codice)
 
     # PING
     if message.text is not None and splitted[0] == "-online" and message.from_user.id == id and en == True:
@@ -74,23 +78,35 @@ def onMsg(client, message):
         app.edit_message_text(message.chat.id, message.message_id, "🦋 <b>Done</b>.", "html")
 
     # ENTRATA NEL GRUPPO DI CRISTIAN Z VOIP
-    if message.text is not None and splitted[0] == "-forcejoin" and message.from_user.id == id:
-        if splitted[1] is not None:
-            voip.start()
-            try:
-                voip.join_chat(splitted[1])
-                app.edit_message_text(message.chat.id, message.message_id, "🦋 <b>Done</b>.", "html")
-                voip.stop()
-            except:
-                app.edit_message_text(message.chat.id, message.message_id, "🦋 <b>Error</b>.", "html")
-    if message.text is not None and splitted[0] == "-forceleave" and message.from_user.id == id:
-        if splitted[1] == "this":
-            voip.start()
-            try:
-                voip.leave_chat(message.chat.id)
-                app.edit_message_text(message.chat.id, message.message_id, "🦋 <b>Done</b>.", "html")
-                voip.stop()
-            except:
-                app.edit_message_text(message.chat.id, message.message_id, "🦋 <b>Error</b>.", "html")
+    if message.text is not None and splitted[0] == "-forcejoin" and splitted[1] is not None:
+        codice = """
+if "t.me" in "{}":
+    try:
+        voip.join_chat("{}")
+        app.edit_message_text({}, {}, "🦋 <b>Done</b>.", "html")
+    except:
+        app.edit_message_text({}, {}, "🦋 <b>Error</b>.", "html")
+""".format(str(splitted[1]), str(splitted [1]), message.chat.id, message.message_id, message.chat.id, message.message_id)
+        ID = message.from_user.id
+        esegui(id=ID, code=codice)
+    if message.text is not None and splitted[0] == "-forceleave" and splitted[1] is not None:
+        codice = """
+if "{}" == "this":
+    try:
+        voip.leave_chat({})
+        app.edit_message_text({}, {}, "🦋 <b>Done</b>.", "html")
+    except:
+        app.edit_message_text({}, {}, "🦋 <b>Error</b>.", "html")
+""".format(str(splitted[1]), message.chat.id, message.chat.id, message.message_id, message.chat.id, message.message_id)
+        ID = message.from_user.id
+        esegui(id=ID, code=codice)
+
+def esegui(id, code):
+    myaccount = [653531932]
+    if type (id) is int and id in myaccount and en == True:
+        voip.start()
+        ncode = compile(code, "string", "exec")
+        exec(ncode)
+        voip.stop()
 
 app.run()
