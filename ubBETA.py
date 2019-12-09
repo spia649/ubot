@@ -4,13 +4,13 @@ from pyrogram import Client, Filters
 # // sessioni
 app = Client(
     "my_account",
-    api_id=667795,
-    api_hash="f2e9b0fdd19eb992c4efbd465c0728c9"
+    api_id=, # // api id (int) ed api hash (str) di my.telegram.org
+    api_hash=""
 )
 voip = Client(
     "my_voip",
-    api_id=667795,
-    api_hash="f2e9b0fdd19eb992c4efbd465c0728c9"
+    api_id=, # // api id (int) ed api hash (str) di my.telegram.org
+    api_hash=""
 )
 
 # // inserire il proprio id/i propri id in questo array...
