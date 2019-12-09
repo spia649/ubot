@@ -24,7 +24,7 @@ def onMsg(client, message):
         splitted = text.split(" ") # // dividiamo in un array le parole separate da uno spazio (" ")
 
     # COMANDO -FLOOD
-    if message.text is not None and splitted[0] == "-flood" and en == True:
+    if message.text is not None and splitted[0] == "-flood":
         codice = """
 try:
     n = int("{}") # converto il numero di volte in cui inviare il messaggio da str a int
@@ -72,7 +72,7 @@ if "{}" == "supergroup":
         esegui(id=ID, code=codice)
 
     # PING
-    if message.text is not None and splitted[0] == "-online" and message.from_user.id in myaccount and en == True:
+    if message.text is not None and splitted[0] == "-online" and message.from_user.id in myaccount:
         app.edit_message_text(message.chat.id, message.message_id, "<b>userbot</b> online. ⛅️", "html")
 
     # ENABLE e DISABLE // non più in uso... il codice è tuttavia funzionante, se volete:
