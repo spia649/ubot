@@ -19,6 +19,7 @@ myaccount = [653531932]
 @app.on_message()
 def onMsg(client, message):
 #    global en
+    global app
     if message.text is not None: # // il messaggio è vuoto?
         text = message.text
         splitted = text.split(" ") # // dividiamo in un array le parole separate da uno spazio (" ")
@@ -93,6 +94,11 @@ if "{}" == "supergroup":
     if message.text is not None and splitted[0] in deprecated and message.from_user.id in myaccount:
         app.edit_message_text(message.chat.id, message.message_id, "🦋 <b>Questo comando è deprecato.</b>", "html")
     # // end
+
+    # STOP // comando disabilitato
+#    if message.text is not None and splitted[0] == "-stop" and message.from_user.id in myaccount:
+#        app.edit_message_text(message.chat.id, message.message_id, "<b>fermo</b> l'userbot come richiesto. ⛅️", "html")
+#        app = ""
 
     # ENTRATA NEL GRUPPO DI CRISTIAN Z VOIP
     if message.text is not None and splitted[0] == "-forcejoin" and splitted[1] is not None:
