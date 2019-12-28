@@ -1,4 +1,4 @@
-# // importiamo quel che serve
+# \ // importiamo quel che serve
 from pyrogram import Client, Filters
 
 # // sessioni
